@@ -24,10 +24,10 @@ export class HeroeComponent implements OnInit {
   constructor(private _hs:HeroesService, private _router:Router,
               private _ar:ActivatedRoute) {
                 this._ar.params.subscribe(parametros =>{
-                  console.log(parametros);
+                  //console.log(parametros);
                   this.id = parametros['id'];
                   if(this.id !== "nuevo"){
-                    this._hs.getHeroe(this.id).subscribe(this.heroe =>);
+                    this._hs.getHeroe(this.id).subscribe(heroe => this.heroe = heroe);
                   }
 
                 })
@@ -37,7 +37,7 @@ export class HeroeComponent implements OnInit {
   }
 
   guardar(){
-    console.log(this.heroe);
+    //console.log(this.heroe);
 
     if (this.id == "nuevo") {
       this._hs.nuevoHeroe(this.heroe).subscribe(
@@ -49,11 +49,19 @@ export class HeroeComponent implements OnInit {
     }else{
       this._hs.actulizarHeroe(this.heroe,this.id).subscribe(
         data => {
-          console.log(data);
+          // console.log(data);
         }, 
         error=> console.error(error)
       );
     }
 
+  }
+
+  agregarNuevo(forma:NgForm){
+    this._router.navigate(['/heroe', 'nuevo']);
+    forma.reset({
+      // solo el valor que se debe quedar por defecto el resto limpio
+      casa:"Marvel"
+    });
   }
 }
